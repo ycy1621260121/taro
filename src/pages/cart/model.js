@@ -1,28 +1,9 @@
 import Taro from '@tarojs/taro';
-import * as cartApi from './service';
-
 
 export default {
   namespace: 'cart',
   state: {
     items: Taro.getStorageSync('items') || [],
-    wxdata:{}
-  },
-  effects: {
-    *wxpay({ payload, callback }, { call, put }) {
-      const data = yield call(cartApi.wxPay, payload);
-      //直接返回
-      if (callback && typeof callback === 'function') {
-            callback(data); // 返回结果
-      };
-      //映射到props
-      yield put({
-        type: 'save',
-        payload: {
-          wxdata: data,
-        },
-      });
-    },
   },
   reducers: {
     save(state, { payload }) {

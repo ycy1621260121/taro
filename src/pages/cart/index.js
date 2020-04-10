@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { connect } from '@tarojs/redux';
 import { View, Image, Button, Text } from '@tarojs/components';
 import ClothingsItem from '../../components/ClothingsItem';
+import * as cartApi from './service';
 import './index.scss';
 
 @connect(({ cart }) => ({
@@ -71,41 +72,81 @@ class Cart extends Component {
       });
     }
   }
-
+ async getOpen(code){
+   const rs = await cartApi.getWxOpenId({
+     code: code,
+   });
+  if(rs.data.openid){
+    const ress = await cartApi.getWxPay({
+      openid:'ohS93v4wig9xYj136xsvQJ7cN_-U'
+    });
+   Taro.requestPayment({
+     timeStamp: ress.timeStamp,
+     nonceStr: ress.nonceStr,
+     package: ress.package,
+     signType: ress.signType,
+     paySign: ress.paySign,
+     success (res) {
+         if (res.err_msg == "get_brand_wcpay_request:ok") {
+           console.log('付款成功')
+         } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+           console.log('取消付款')
+         } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+           console.log('付款失败')
+         }
+     },
+     fail (res) {console.log('取消付款',res)}
+   })
+  }
+   /*let params={
+     openid:'ohS93v4wig9xYj136xsvQJ7cN_-U'
+   }
+   this.props.dispatch({
+     type: 'cart/wxpay',
+     payload: params,
+     callback: (ress) => {
+       //if (process.env.TARO_ENV === 'weapp') {
+         Taro.requestPayment({
+           timeStamp: ress.timeStamp,
+           nonceStr: ress.nonceStr,
+           package: ress.package,
+           signType: ress.signType,
+           paySign: ress.paySign,
+           success (res) {
+               if (res.err_msg == "get_brand_wcpay_request:ok") {
+                 console.log('付款成功')
+               } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                 console.log('取消付款')
+               } else if (res.err_msg == "get_brand_wcpay_request:fail") {
+                 console.log('付款失败')
+               }
+           },
+           fail (res) {console.log('取消付款',res)}
+         })
+     //  }
+      }
+   });*/
+ }
   buy=()=>{
     // Taro.showToast({
     //   title: '衣袋尚未激活，下单失败～～',
     //   icon: 'none',
     // });
     //微信支付
-    let params={
-      openid:'ohS93v4wig9xYj136xsvQJ7cN_-U'
+    if (process.env.TARO_ENV === 'weapp') {
+      let _this= this;
+      wx.login({
+        success (res) {
+          if (res.code) {
+            //发起网络请求
+            _this.getOpen(res.code)
+          } else {
+            console.log('登录失败！' + res.errMsg)
+          }
+        }
+      })
     }
-    this.props.dispatch({
-      type: 'cart/wxpay',
-      payload: params,
-      callback: (ress) => {
-        //if (process.env.TARO_ENV === 'weapp') {
-          Taro.requestPayment({
-            timeStamp: ress.timeStamp,
-            nonceStr: ress.nonceStr,
-            package: ress.package,
-            signType: ress.signType,
-            paySign: ress.paySign,
-            success (res) {
-                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                  console.log('付款成功')
-                } else if (res.err_msg == "get_brand_wcpay_request:cancel") {
-                  console.log('取消付款')
-                } else if (res.err_msg == "get_brand_wcpay_request:fail") {
-                  console.log('付款失败')
-                }
-            },
-            fail (res) {console.log('取消付款',res)}
-          })
-      //  }
-       }
-    });
+
   }
 
   render() {
