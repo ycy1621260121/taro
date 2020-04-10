@@ -6,7 +6,7 @@
 
 该项目基于Taro，构建了一个时装衣橱的项目演示，涉及了一个电商平台完整的业务逻辑和功能点，如果这个项目能驾驭的了，相信大部分公司的其他React项目也就不在话下。
 
-如遇网络不佳，请移步[国内镜像加速节点](https://gitee.com/easytuan/taro-msparis)
+如遇网络不佳，请移步[国内镜像加速节点](https://github.com/ycy1621260121/taro)
 
 # 效果演示
 
@@ -25,11 +25,9 @@ React + Taro + Dva + Sass + ES6/ES7
 
 ```
 
-git clone git@github.com:EasyTuan/taro-msparis.git
+https://github.com/ycy1621260121/taro
 
-# 国内镜像加速节点:git@gitee.com:easytuan/taro-msparis.git
-
-cd taro-msparis
+cd taro
 
 # 全局安装taro脚手架
 npm install -g @tarojs/cli@1.2.2

@@ -25,8 +25,7 @@ export default class About extends Component {
           该项目基于Taro，构建了一个时装衣橱的项目演示，涉及了一个电商平台完整的业务逻辑和功能点，如果这个项目能驾驭的了，相信大部分公司的其他React项目也就不在话下。
         </View>
         <View>
-          项目GitHub地址：https://github.com/EasyTuan/taro-msparis
-          如遇网络不佳，请移步国内镜像加速节点：https://gitee.com/easytuan/taro-msparis
+          项目GitHub地址：https://github.com/ycy1621260121/taro
         </View>
       </View>
     );
