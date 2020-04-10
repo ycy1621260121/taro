@@ -20,7 +20,7 @@ class User extends Component {
 
   }
   goPage = e => {
-    console.log(e.currentTarget.dataset.url)
+    //console.log(e.currentTarget.dataset.url)
     if ( e.currentTarget.dataset.url == '/pages/login/index' && process.env.TARO_ENV === 'h5') {
        Taro.navigateTo({
          url: e.currentTarget.dataset.url,
@@ -150,7 +150,7 @@ class User extends Component {
         <View className="login">
           <View className="card">
             <View className="type type0">
-              <View className="operation">
+             {process.env.TARO_ENV === 'h5' ?( <View className="operation">
                 <View className="txt">
                   {mobile ? 'VIP会员用户' : '您还不是会员'}
                 </View>
@@ -164,7 +164,10 @@ class User extends Component {
                     <View className="iconfont icon-membership_more" />
                   </View>
                 )}
-              </View>
+              </View>):(<View className="operation">
+                <View className="txt">VIP会员用户</View>
+              </View>)
+             }
             </View>
           </View>
           <View
