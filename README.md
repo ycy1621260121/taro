@@ -6,16 +6,6 @@
 
 该项目基于Taro，构建了一个时装衣橱的项目演示，涉及了一个电商平台完整的业务逻辑和功能点，如果这个项目能驾驭的了，相信大部分公司的其他React项目也就不在话下。
 
-如遇网络不佳，请移步[国内镜像加速节点](https://github.com/ycy1621260121/taro)
-
-# 效果演示
-
-[查看demo请戳这里](http://ms.caibowen.net/)（请用chrome手机模式预览）
-
-### H5版 && 微信小程序版
-
-<img src="screenshots/qr-code.png" width="250"/> <img src="screenshots/weapp-code.jpg" width="250"/>
-
 
 # 技术栈
 
@@ -38,6 +28,9 @@ taro update project
 
 # 安装项目依赖
 npm install
+
+#如果安装出现vs2005错误,删除node_modules,运行下面的代码后再npm install：
+npm install --global --production windows-build-tools
 
 # 微信小程序
 npm run dev:weapp
@@ -62,20 +55,6 @@ npm run tep `文件名`
 
 ```
 
-## 休闲一刻
-
-<img src="screenshots/gh_a896d27a50a3_430.jpg" width="250"/> <img src="screenshots/gh_44a51ea2dd08_430.jpg" width="250"/>
-
-## 项目说明
-
-**git分支说明：**
-
-  init：框架整体结构，不涉及任何业务逻辑
-
-  master：项目的稳定版本
-  
-  feature：项目开发分支
-
 
 ## 适配进度
 
@@ -86,72 +65,6 @@ npm run tep `文件名`
 - [ ] 字节跳动小程序 -- 适配中
 - [ ] React Native -- 适配中
 - [ ] 快应用 -- 适配中
-
-## 目标功能
-
-- [x] 美衣列表 -- 完成
-- [x] 美衣详情 -- 完成
-- [x] 登录、注册 -- 完成
-- [x] 个人中心 -- 完成
-- [x] 优惠券 -- 完成
-- [x] 衣袋（购物车） -- 完成
-- [x] 收货地址 -- 完成
-- [ ] 会员中心 -- 开发中
-
-# 业务介绍
-
-目录结构
-
-    ├── .temp                  // H5编译结果目录
-    ├── .rn_temp               // RN编译结果目录
-    ├── dist                   // 小程序编译结果目录
-    ├── config                 // Taro配置目录
-    │   ├── dev.js                 // 开发时配置
-    │   ├── index.js               // 默认配置
-    │   └── prod.js                // 打包时配置
-    ├── screenshots            // 项目截图，和项目开发无关
-    ├── site                   // H5静态文件（打包文件）
-    ├── src                    // 源码目录
-    │   ├── components             // 组件
-    │   ├── config                 // 项目开发配置
-    │   ├── images                 // 图片文件
-    │   ├── models                 // redux models
-    │   ├── pages                  // 页面文件目录
-    │   │   └── home
-    │   │       ├── index.js           // 页面逻辑
-    │   │       ├── index.scss         // 页面样式
-    │   │       ├── model.js           // 页面models
-    │   │       └── service.js        // 页面api
-    │   ├── styles             // 样式文件
-    │   ├── utils              // 常用工具类
-    │   ├── app.js             // 入口文件
-    │   └── index.html
-    ├── package.json
-    └── template.js            // pages模版快速生成脚本,执行命令 npm run tep `文件名`
-
-## 部分截图展示
-
-### 首页 && 商品详情
-
-<img src="screenshots/1.png" width="375px" height="667px" /> <img src="screenshots/2.png" width="375px" height="667px" />
-
-### 衣袋 && 我的
-
-<img src="screenshots/3.png" width="375px" height="667px" /> <img src="screenshots/4.png" width="375px" height="667px" />
-
-### 登录 && 优惠券
-
-<img src="screenshots/5.png" width="375px" height="667px" /> <img src="screenshots/6.png" width="375px" height="667px" />
-
-
-# 说明
-
->  如果对您有帮助，您可以点右上角 "Star" 支持一下 谢谢！ ^_^
-
->  或者您可以 "follow" 一下，我会不断开源更多的有趣的项目
-
->  如有问题请直接在 Issues 中提，或者您发现问题并有非常好的解决方案，欢迎 PR 👍
-
 
 # 文档
 
@@ -178,16 +91,3 @@ npm run tep `文件名`
 ### 字节跳动小程序官方文档
 
 > https://microapp.bytedance.com/
-
-
-# 赞助
-
-如有帮助，欢迎赞助
-
-收到赞助款后，我会及时更新[赞助墙](https://caibowen.net/sponsor)
-
-<img src="screenshots/wechat.jpg" width="200px" /> <img src="screenshots/alipay.jpg" width="200px" />
-
-# License
-
-[MIT](LICENSE)
