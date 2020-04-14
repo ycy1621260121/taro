@@ -12,5 +12,11 @@
 	"compileType": "miniprogram",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"condition": {}
+	"condition": {},
+  "permission": {
+    "scope.userLocation": {
+      "desc": "位置信息效果展示"
+    }
+  }
+
 }

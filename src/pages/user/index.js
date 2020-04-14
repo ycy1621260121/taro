@@ -2,11 +2,13 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, Image, Text, Icon, OpenData } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './index.scss';
+import scanCode_img from '../../images/user/scan.png';
 import message_img from '../../images/user/message.png';
 import avatar_img from '../../images/user/avatar.png';
 import coupon_img from '../../images/user/coupon.png';
 import about_img from '../../images/user/about.png';
 import address_img from '../../images/user/address.png';
+import QQMapWX  from '../../js/qqmap-wx-jssdk.js';
 
 @connect(({ user, common }) => ({
   ...user,
@@ -16,8 +18,104 @@ class User extends Component {
   config = {
     navigationBarTitleText: '我的',
   };
-  componentDidMount = () => {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+     title:'',
+     mapData:[],
+     isClick :true
+    };
+  }
+  componentWillMount() {
+    let _this =this;
+     if (process.env.TARO_ENV === 'weapp') {
+      wx.startLocationUpdate({
+          success(res) {
+            //console.log('开启后台定位', res);
+            if(res){
+              _this.getLocationIt();
+            }
+          },
+          fail(res) {
+            console.log('开启后台定位失败', res)
+          }
+        });
+      }
+  }
+  getLocationIt=()=>{
+    const { isClick } = this.state;
+    let _this = this;
+    if (isClick) {   //如果为true 开始执行
+    this.setState({ isClick: false }) ;
+    wx.getLocation({
+     type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+     success (ress) {
+       const latitude = ress.latitude;
+       const longitude = ress.longitude;
+       // 实例化API核心类
+       var qqmapsdk = new QQMapWX({
+         key: 'PMOBZ-TL2WJ-ZFUFV-FSDDJ-YO2Y6-NJFIA' // 必填
+       });
+      // 调用接口
+       qqmapsdk.getSuggestion({
+          keyword: '海底捞',  //搜索关键词
+          page_size:5,
+          auto_extend:0,
+          location: latitude+','+longitude,  //设置周边搜索中心点
+          success: function (res) { //搜索成功后的回调
+          _this.setState({
+            mapData:res.data
+          });
+           const itemListData =[];
+           for(let i in res.data){
+             itemListData[i]=res.data[i].title + ('  ('+res.data[i]._distance+'米)');
+           }
+            console.log('看这里',res.data);
+            Taro.showActionSheet({
+              itemList: itemListData
+            })
+            .then(rs =>{
+              console.log(rs.tapIndex,res.data[rs.tapIndex].id)//获取到当前选择店铺的id
+              _this.setState({
+                title:res.data[rs.tapIndex].title
+              });
+            })
+            .catch(err => console.log(err.errMsg))
+          },
+          fail: function (res) {
+            console.log(res);
+          },
+      });
+     }
+    })
+    setTimeout(() =>{       // 设置延迟事件，1秒后将执行
+    _this.setState({ isClick: true })   // 将isClick设置为true
+    }, 1500);
+    }
+  }
+  changeMap(){
+    const { mapData, isClick }=this.state;
+    const itemListData =[];
+    let _this = this;
+    if (isClick) {   //如果为true 开始执行
+    this.setState({ isClick: false })
+    for(let i in mapData){
+      itemListData[i]=mapData[i].title + ('  ('+mapData[i]._distance+'米)');
+    }
+     Taro.showActionSheet({
+       itemList: itemListData
+     })
+     .then(rs =>{
+        console.log(rs.tapIndex,mapData[rs.tapIndex].id)//获取到当前选择店铺的id
+       _this.setState({
+         title:mapData[rs.tapIndex].title
+       });
+     })
+     .catch(err => console.log(err.errMsg))
+     }
+     setTimeout(() =>{       // 设置延迟事件，1秒后将执行
+     _this.setState({ isClick: true })   // 将isClick设置为true
+     }, 1500);
   }
   goPage = e => {
     //console.log(e.currentTarget.dataset.url)
@@ -40,6 +138,14 @@ class User extends Component {
         url: e.currentTarget.dataset.url,
       });
   };
+
+  toScanCode = () =>{
+    Taro.scanCode({
+      success (res) {
+        console.log(res)
+      }
+    })
+  }
 
   outLogin = e => {
     e.stopPropagation();
@@ -88,6 +194,7 @@ class User extends Component {
 
   render() {
     const { mobile, coupon_number, nickname, list } = this.props;
+    const { title } =this.state;
     return (
       <View className="user-page">
         <View className="not-login">
@@ -120,6 +227,12 @@ class User extends Component {
                     src="http://static-r.msparis.com/uploads/9/a/9a00ce9a5953a6813a03ee3324cbad2a.png"
                   />
                 </View>
+                <View
+                  className="msg"
+                  onClick={this.toScanCode}
+                >
+                  <Image mode="widthFix" src={scanCode_img} />
+                </View>
               </View>
             </View>
             <View className="avatar-container">
@@ -131,6 +244,13 @@ class User extends Component {
             }
             </View>
           </View>
+          {title?(<View
+            className="maphere"
+            onClick={this.changeMap}
+          >
+           <Text>{title+' '}></Text>
+          </View>):null
+          }
           <View className="list">
             {list &&
               list.map((item, index) => (
